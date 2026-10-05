@@ -1,4 +1,25 @@
 <?php
+/*
+|--------------------------------------------------------------------------
+| Bind Storage Path for Vercel Serverless
+|--------------------------------------------------------------------------
+*/
+if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL'])) {
+    $app->useStoragePath('/tmp/storage');
+
+    $directories = [
+        '/tmp/storage/framework/views',
+        '/tmp/storage/framework/cache',
+        '/tmp/storage/framework/sessions',
+        '/tmp/storage/logs',
+    ];
+
+    foreach ($directories as $dir) {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+    }
+}
 
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
